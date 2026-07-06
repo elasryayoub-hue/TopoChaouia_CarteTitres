@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>TopoChaouia — Carte des Titres</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<div id="map"></div>
+
+<!-- Top bar -->
+<div id="topbar">
+  <button id="btnMenu" class="iconbtn" aria-label="Menu">☰</button>
+  <div id="searchWrap">
+    <input id="searchInput" type="text" inputmode="numeric" placeholder="Rechercher un N° de titre…" autocomplete="off">
+    <button id="btnSearch" class="iconbtn" aria-label="Rechercher">🔍</button>
+  </div>
+</div>
+
+<div id="searchResults" class="hidden"></div>
+
+<div id="zoomBanner" class="hidden"></div>
+<div id="dataError" class="hidden"></div>
+
+<!-- Side panel -->
+<div id="panel" class="hidden">
+  <div class="panel-header">
+    <span>Calques</span>
+    <button id="btnClosePanel" class="iconbtn">✕</button>
+  </div>
+  <div class="panel-body">
+    <label class="row"><input type="checkbox" id="toggleTitres" checked> Titres fonciers (parcelles)</label>
+    <label class="row"><input type="checkbox" id="toggleBornes" checked> Bornes</label>
+    <hr>
+    <div class="row-label">Fond de carte</div>
+    <label class="row"><input type="radio" name="basemap" value="sat" checked> Satellite</label>
+    <label class="row"><input type="radio" name="basemap" value="osm"> Plan (OSM)</label>
+    <hr>
+    <div id="statusInfo" class="status-info"></div>
+  </div>
+</div>
+
+<!-- Bottom-right controls -->
+<div id="controls">
+  <button id="btnOverview" class="fab" aria-label="Vue d'ensemble" title="Voir toute la zone couverte">🗺️</button>
+  <button id="btnLocate" class="fab" aria-label="Ma position">📍</button>
+</div>
+
+<!-- Feature info sheet -->
+<div id="infoSheet" class="hidden">
+  <div class="sheet-handle"></div>
+  <div id="infoContent"></div>
+</div>
+
+<div id="loadingToast" class="hidden">Chargement des parcelles…</div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
