@@ -72,6 +72,7 @@
 <div id="dataError" class="hidden"></div>
 <div id="targetInfo" class="hidden"></div>
 <div id="measureInfo" class="hidden"></div>
+<div id="areaInfo" class="hidden" style="position:absolute;left:10px;right:10px;z-index:1000;bottom:max(24px, env(safe-area-inset-bottom));background:#1b2023;border:1px solid rgba(255,255,255,0.10);border-radius:12px;padding:10px 14px;font-size:13px;color:#eef1f2;"></div>
 
 <!-- Side panel -->
 <div id="panel" class="hidden">
@@ -96,7 +97,7 @@
 <div id="controls">
   <button id="btnOverview" class="fab" aria-label="Vue d'ensemble" title="Voir toute la zone couverte">🗺️</button>
   <button id="btnMeasure" class="fab" aria-label="Mesurer une distance" title="Mesurer une distance">📏</button>
-  <button id="btnClearTarget" class="fab hidden" aria-label="Effacer la cible" title="Effacer la cible">🎯✕</button>
+  <button id="btnDrawArea" class="fab" aria-label="Dessiner une zone" title="Dessiner une zone (surface)">📐</button>  <button id="btnClearTarget" class="fab hidden" aria-label="Effacer la cible" title="Effacer la cible">🎯✕</button>
   <button id="btnLocate" class="fab" aria-label="Ma position">📍</button>
 </div>
 

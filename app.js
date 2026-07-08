@@ -27,6 +27,11 @@ let measureActive = false;
 let measurePoints = [];
 let measureLayer = null;
 
+// Dessin de zone (calcul de surface)
+let drawAreaActive = false;
+let drawPoints = [];
+let drawLayer = null;
+
 // Point cible (réticule verrouillé)
 let targetLatLng = null;
 let targetMarker = null;
@@ -54,6 +59,7 @@ async function init() {
   titresLayerGroup = L.layerGroup().addTo(map);
   bornesLayerGroup = L.layerGroup().addTo(map);
   measureLayer = L.layerGroup().addTo(map);
+  drawLayer = L.layerGroup().addTo(map);
 
   map.setView([32.9, -7.6], 12);
 
@@ -423,6 +429,52 @@ function handleMapClickForMeasure(latlng) {
 }
 
 // ---------------------------------------------------------------------
+// Dessin de zone / calcul de surface
+// ---------------------------------------------------------------------
+function toggleDrawArea() {
+  drawAreaActive = !drawAreaActive;
+  const btn = document.getElementById('btnDrawArea');
+  btn.classList.toggle('active', drawAreaActive);
+  if (measureActive) toggleMeasure(); // évite les deux outils actifs en même temps
+  if (!drawAreaActive) {
+    drawPoints = [];
+    drawLayer.clearLayers();
+    document.getElementById('areaInfo').classList.add('hidden');
+  } else {
+    closeInfoSheet();
+  }
+}
+
+function handleMapClickForDraw(latlng) {
+  drawPoints.push(latlng);
+  drawLayer.clearLayers();
+  drawPoints.forEach(p => {
+    L.circleMarker(p, { radius: 5, color: '#fff', weight: 2, fillColor: '#4dff8a', fillOpacity: 1 }).addTo(drawLayer);
+  });
+
+  const infoEl = document.getElementById('areaInfo');
+  if (drawPoints.length < 3) {
+    if (drawPoints.length === 2) L.polyline(drawPoints, { color: '#4dff8a', weight: 3 }).addTo(drawLayer);
+    infoEl.innerHTML = 'Touchez au moins un 3ᵉ point pour calculer une surface';
+    infoEl.classList.remove('hidden');
+    return;
+  }
+
+  L.polygon(drawPoints, { color: '#4dff8a', weight: 3, fillColor: '#4dff8a', fillOpacity: 0.15 }).addTo(drawLayer);
+
+  const proj = drawPoints.map(p => proj4('EPSG:4326', 'EPSG:26191', [p.lng, p.lat]));
+  let area = 0;
+  for (let i = 0; i < proj.length; i++) {
+    const [x1, y1] = proj[i];
+    const [x2, y2] = proj[(i + 1) % proj.length];
+    area += x1 * y2 - x2 * y1;
+  }
+  area = Math.abs(area) / 2;
+
+  let perim = 0;
+  for (let i = 0; i < proj.length; i++) {
+
+// ---------------------------------------------------------------------
 // UI
 // ---------------------------------------------------------------------
 function wireUI() {
@@ -461,7 +513,11 @@ function wireUI() {
   document.getElementById('btnCloseInfo').addEventListener('click', closeInfoSheet);
   document.getElementById('infoSheet').querySelector('.sheet-handle').addEventListener('click', closeInfoSheet);
 
-  map.on('click', e => { if (measureActive) handleMapClickForMeasure(e.latlng); });
+  map.on('click', e => {
+    if (measureActive) handleMapClickForMeasure(e.latlng);
+    if (drawAreaActive) handleMapClickForDraw(e.latlng);
+  });
+  document.getElementById('btnDrawArea').addEventListener('click', toggleDrawArea);
 }
 
 function showToast(show, text) {
