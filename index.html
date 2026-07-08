@@ -8,6 +8,44 @@
 <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+<div id="lockScreen">
+  <div class="lock-box">
+    <div class="lock-title">🔒 TopoChaouia</div>
+    <input id="lockInput" type="password" placeholder="Mot de passe" autocomplete="off">
+    <button id="lockBtn">Entrer</button>
+    <div id="lockError" class="hidden">Mot de passe incorrect</div>
+  </div>
+</div>
+<style>
+  #lockScreen{ position:fixed; inset:0; z-index:99999; background:#14181b;
+    display:flex; align-items:center; justify-content:center; }
+  #lockScreen.hidden{ display:none; }
+  .lock-box{ text-align:center; padding:24px; }
+  .lock-title{ color:#eef1f2; font-size:20px; margin-bottom:16px; font-family:sans-serif; }
+  #lockInput{ display:block; width:220px; padding:12px; border-radius:10px; border:1px solid #333;
+    background:#1b2023; color:#fff; font-size:16px; margin-bottom:10px; text-align:center; }
+  #lockBtn{ width:220px; padding:12px; border-radius:10px; border:none;
+    background:#ffb020; color:#1a1200; font-size:16px; font-weight:600; }
+  #lockError{ color:#ff5a5a; margin-top:10px; font-family:sans-serif; }
+</style>
+<script>
+  (function(){
+    const PASSWORD = "Elasry"; // <-- changez ce mot de passe ici
+    const saved = sessionStorage.getItem('topo_unlocked');
+    if (saved === '1') document.getElementById('lockScreen').classList.add('hidden');
+    document.getElementById('lockBtn').addEventListener('click', check);
+    document.getElementById('lockInput').addEventListener('keydown', e => { if (e.key === 'Enter') check(); });
+    function check(){
+      const val = document.getElementById('lockInput').value;
+      if (val === PASSWORD) {
+        sessionStorage.setItem('topo_unlocked', '1');
+        document.getElementById('lockScreen').classList.add('hidden');
+      } else {
+        document.getElementById('lockError').classList.remove('hidden');
+      }
+    }
+  })();
+</script>
 
 <div id="map"></div>
 
