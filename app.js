@@ -473,6 +473,16 @@ function handleMapClickForDraw(latlng) {
 
   let perim = 0;
   for (let i = 0; i < proj.length; i++) {
+    const [x1, y1] = proj[i];
+    const [x2, y2] = proj[(i + 1) % proj.length];
+    perim += Math.hypot(x2 - x1, y2 - y1);
+  }
+
+  infoEl.innerHTML =
+    `<b>${area.toFixed(2)} m²</b> (${(area / 10000).toFixed(4)} ha) — périmètre ${perim.toFixed(2)} m · ` +
+    `${drawPoints.length} sommets · touchez 📐 pour effacer`;
+  infoEl.classList.remove('hidden');
+}
 
 // ---------------------------------------------------------------------
 // UI
