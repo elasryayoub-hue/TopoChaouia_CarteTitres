@@ -154,7 +154,7 @@ async function loadBornesTile(tileMeta) {
       pointToLayer: (feature, latlng) => L.circleMarker(latlng, {
         radius: 4, color: '#0b3a36', weight: 1, fillColor: '#35e0d0', fillOpacity: 0.95
       }),
-      onEachFeature: (feature, lyr) => lyr.on('click', () => showBorneInfo(feature.properties))
+      onEachFeature: (feature, lyr) => lyr.on('click', () => showBorneInfo(feature.properties, feature.geometry.coordinates))
     }).addTo(bornesLayerGroup);
   } catch (e) {
     loadedBornesTiles.delete(key);
@@ -192,15 +192,26 @@ function showTitreInfo(props, layer) {
   }
 }
 
-function showBorneInfo(props) {
+function showBorneInfo(props, coords) {
   const rows = [
     ['N° Borne', props.Num], ['Titre associé', props.Num_Titre],
     ['Nature titre', props.Nature_Titre], ['Indice', props.indice_Titre],
   ].filter(r => r[1] !== undefined && r[1] !== null && r[1] !== '');
 
+  let coordRows = '';
+  if (coords) {
+    try {
+      const [x, y] = proj4('EPSG:4326', 'EPSG:26191', coords);
+      coordRows =
+        `<div class="info-row"><span>X (Lambert)</span><span>${x.toFixed(2)}</span></div>` +
+        `<div class="info-row"><span>Y (Lambert)</span><span>${y.toFixed(2)}</span></div>`;
+    } catch (e) { /* ignore */ }
+  }
+
   document.getElementById('infoContent').innerHTML =
     `<h3>Borne ${props.Num ?? ''}</h3>` +
-    rows.map(r => `<div class="info-row"><span>${r[0]}</span><span>${escapeHtml(String(r[1]))}</span></div>`).join('');
+    rows.map(r => `<div class="info-row"><span>${r[0]}</span><span>${escapeHtml(String(r[1]))}</span></div>`).join('') +
+    coordRows;
   openInfoSheet();
 }
 
