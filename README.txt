@@ -34,6 +34,38 @@ DONNÉES CONVERTIES
   dézoomée. Un message en bas du menu indique le zoom actuel.
 - 13 347 bornes converties en points.
 
+MISE À JOUR v3 — corrections majeures + nouvelles fonctionnalités
+--------------------------
+1) DÉCALAGE CORRIGÉ (cause trouvée) : le fichier titres.TAB définit bien
+   la projection Lambert Nord Maroc, mais SANS le paramètre de
+   changement de datum (Merchich → WGS84). La conversion automatique
+   ignorait donc ce décalage, ce qui introduisait une erreur d'environ
+   300 mètres. La conversion a été refaite avec la définition officielle
+   EPSG:26191 (Merchich / Nord Maroc) — vérifié : les bornes coïncident
+   maintenant avec les coins des titres à quelques mètres près.
+
+2) BORNES INCOMPLÈTES CORRIGÉ : le fichier Bornes.MAP/.ID était corrompu
+   et GDAL s'arrêtait après seulement 13 347 bornes. En lisant
+   directement le fichier binaire Bornes.DAT (650 482 enregistrements,
+   650 113 valides), les 650 113 bornes réelles sont maintenant chargées
+   — réparties en 791 tuiles pour rester fluide sur mobile.
+
+3) Fiche d'info : bouton ✕ ajouté en haut à droite pour la fermer et
+   continuer à naviguer (en plus du glisser vers le bas).
+
+4) Outil de mesure de distance : bouton 📏. Touchez la carte pour poser
+   des points ; la distance cumulée s'affiche en bas. Touchez 📏 à
+   nouveau pour effacer.
+
+5) Réticule central + coordonnées Lambert en direct : une croix reste
+   fixée au centre de l'écran pendant que vous déplacez la carte, avec
+   les coordonnées Lambert Nord Maroc (X, Y) affichées en direct
+   au-dessous. Bouton 🎯 : fixe ce point comme "cible". Une fois la
+   cible fixée et le GPS activé (📍), une ligne rouge relie votre
+   position à la cible, avec distance (m) et gisement (en grades,
+   sens horaire depuis le Nord — même convention que Reverse
+   Cheminement). Bouton 🎯✕ pour effacer la cible.
+
 MISE À JOUR (correctif affichage des titres)
 --------------------------
 Si les titres ne s'affichaient pas du tout, même en zoomant à fond, la

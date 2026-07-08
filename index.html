@@ -11,6 +11,15 @@
 
 <div id="map"></div>
 
+<!-- Réticule central fixe (coordonnées Lambert Nord Maroc en direct) -->
+<div id="crosshairWrap">
+  <div id="crosshair">+</div>
+  <div id="coordReadout">
+    <span class="coord-x">X —</span><span class="coord-y">Y —</span>
+    <button id="btnTarget" title="Fixer ce point comme cible">🎯</button>
+  </div>
+</div>
+
 <!-- Top bar -->
 <div id="topbar">
   <button id="btnMenu" class="iconbtn" aria-label="Menu">☰</button>
@@ -21,9 +30,10 @@
 </div>
 
 <div id="searchResults" class="hidden"></div>
-
 <div id="zoomBanner" class="hidden"></div>
 <div id="dataError" class="hidden"></div>
+<div id="targetInfo" class="hidden"></div>
+<div id="measureInfo" class="hidden"></div>
 
 <!-- Side panel -->
 <div id="panel" class="hidden">
@@ -34,6 +44,7 @@
   <div class="panel-body">
     <label class="row"><input type="checkbox" id="toggleTitres" checked> Titres fonciers (parcelles)</label>
     <label class="row"><input type="checkbox" id="toggleBornes" checked> Bornes</label>
+    <label class="row"><input type="checkbox" id="toggleCrosshair" checked> Réticule + coordonnées Lambert</label>
     <hr>
     <div class="row-label">Fond de carte</div>
     <label class="row"><input type="radio" name="basemap" value="sat" checked> Satellite</label>
@@ -46,17 +57,21 @@
 <!-- Bottom-right controls -->
 <div id="controls">
   <button id="btnOverview" class="fab" aria-label="Vue d'ensemble" title="Voir toute la zone couverte">🗺️</button>
+  <button id="btnMeasure" class="fab" aria-label="Mesurer une distance" title="Mesurer une distance">📏</button>
+  <button id="btnClearTarget" class="fab hidden" aria-label="Effacer la cible" title="Effacer la cible">🎯✕</button>
   <button id="btnLocate" class="fab" aria-label="Ma position">📍</button>
 </div>
 
 <!-- Feature info sheet -->
 <div id="infoSheet" class="hidden">
   <div class="sheet-handle"></div>
+  <button id="btnCloseInfo" class="iconbtn sheet-close" aria-label="Fermer">✕</button>
   <div id="infoContent"></div>
 </div>
 
 <div id="loadingToast" class="hidden">Chargement des parcelles…</div>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/proj4js/2.9.2/proj4.js"></script>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script src="app.js"></script>
 </body>

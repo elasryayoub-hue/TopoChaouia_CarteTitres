@@ -121,6 +121,9 @@ hr{ border:none; border-top:1px solid var(--line); margin:10px 0; }
   box-shadow: 0 -6px 20px rgba(0,0,0,0.4);
 }
 #infoSheet.hidden{ transform: translateY(110%); }
+.sheet-close{
+  position:absolute; top:10px; right:12px; width:38px; height:38px; font-size:16px;
+}
 .sheet-handle{
   width:40px; height:4px; border-radius:2px; background:var(--line);
   margin: 8px auto 12px;
@@ -156,6 +159,43 @@ hr{ border:none; border-top:1px solid var(--line); margin:10px 0; }
 }
 
 .hidden{ display:none !important; }
+
+/* ---------- Crosshair + Lambert coord readout ---------- */
+#crosshairWrap{
+  position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);
+  z-index:900; pointer-events:none; display:flex; flex-direction:column; align-items:center;
+}
+#crosshair{
+  font-size:26px; color:#ffffff; text-shadow:0 0 4px rgba(0,0,0,0.9), 0 0 2px rgba(0,0,0,0.9);
+  line-height:1; margin-bottom:6px;
+}
+#coordReadout{
+  pointer-events:auto;
+  display:flex; align-items:center; gap:10px;
+  background: var(--panel); border:1px solid var(--line); border-radius:10px;
+  padding:6px 8px 6px 12px; font-size:12px; font-variant-numeric: tabular-nums;
+  backdrop-filter: blur(6px); white-space:nowrap;
+}
+#coordReadout .coord-x, #coordReadout .coord-y{ color:var(--text); }
+#coordReadout button{
+  border:none; background: var(--gps); color:#fff; border-radius:8px;
+  width:30px; height:30px; font-size:15px; display:flex; align-items:center; justify-content:center;
+}
+#coordReadout button:active{ transform:scale(0.92); }
+
+.target-icon{ font-size:22px; filter: drop-shadow(0 2px 3px rgba(0,0,0,0.6)); text-align:center; }
+
+/* ---------- Target / measure floating info ---------- */
+#targetInfo, #measureInfo{
+  position:absolute; left:10px; right:10px; z-index:1000;
+  bottom: max(90px, calc(24px + env(safe-area-inset-bottom) + 78px));
+  background: var(--panel-solid); border:1px solid var(--line);
+  border-radius: 12px; padding:10px 14px; font-size:13px;
+}
+.ti-row{ display:flex; justify-content:space-between; padding:3px 0; }
+.ti-row b{ color:var(--accent); }
+#measureInfo{ bottom: max(24px, env(safe-area-inset-bottom)); }
+
 
 /* Leaflet popups minimal override */
 .leaflet-popup-content-wrapper{ background:var(--panel-solid); color:var(--text); border-radius:10px; }
